@@ -32,8 +32,8 @@ local controller = {
 	collisionbox = {-0.5,-0.5,-0.5, 0.5,0.5,0.5},
 	visual = "mesh",
 	mesh="controller.x",
-	textures = {"flyingmachine_controller.png"},
-	--textures = {"flyingmachine_controller.png","flyingmachine_controller.png","flyingmachine_controller.png","flyingmachine_controller.png","flyingmachine_controller.png","flyingmachine_controller.png"},
+	textures = {"flyingvehicle_controller.png"},
+	--textures = {"flyingvehicle_controller.png","flyingvehicle_controller.png","flyingvehicle_controller.png","flyingvehicle_controller.png","flyingvehicle_controller.png","flyingvehicle_controller.png"},
 	--visual_size = {x=1, y=1},
 	vx = 0,--Velo. for/back-ward
 	vy = 0,--Velo. up/down
@@ -56,7 +56,7 @@ end
 function controller:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
 	self.object:remove()
 	if puncher and puncher:is_player() then
-		puncher:get_inventory():add_item("main", "flyingmachine:controller")
+		puncher:get_inventory():add_item("main", "flyingvehicle:controller")
 	end
 end
 function box:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
@@ -136,13 +136,13 @@ function controller:on_step(dtime)
 	self.object:setvelocity(get_velocity(self.vx, self.vy, self.vz, self.object:getyaw()))
 end
 
-minetest.register_entity("flyingmachine:box", box)
-minetest.register_entity("flyingmachine:controller", controller)
+minetest.register_entity("flyingvehicle:box", box)
+minetest.register_entity("flyingvehicle:controller", controller)
 
-minetest.register_craftitem("flyingmachine:controller", {
+minetest.register_craftitem("flyingvehicle:controller", {
 	description = "controller",
-	inventory_image = "flyingmachine_controller.png",
-	wield_image = "flyingmachine_controller.png",
+	inventory_image = "flyingvehicle_controller.png",
+	wield_image = "flyingvehicle_controller.png",
 	wield_scale = {x=1, y=1, z=1},
 	liquids_pointable = false,
 	on_place = function(itemstack, placer, pointed_thing)
@@ -167,7 +167,7 @@ minetest.register_craftitem("flyingmachine:controller", {
 				return
 			end
 		end
-		local object = minetest.env:add_entity(pos, "flyingmachine:controller")
+		local object = minetest.env:add_entity(pos, "flyingvehicle:controller")
 		--Find a corner of steel plane
 		pos.y=pos.y-height
 		for i=1,50 do
@@ -211,7 +211,7 @@ minetest.register_craftitem("flyingmachine:controller", {
 					node = minetest.env:get_node(pos)
 					if node.name=="default:wood" then
 						minetest.env:remove_node(pos)
-						local object2=minetest.env:add_entity(pos, "flyingmachine:box")
+						local object2=minetest.env:add_entity(pos, "flyingvehicle:box")
 						object2:set_attach(object,"Armature", {x=(j-lx)*10,y=(v-height+1)*10,z=(i-lz)*10}, {x=0,y=0,z=0})
 					end
 					
@@ -226,7 +226,7 @@ minetest.register_craftitem("flyingmachine:controller", {
 				pos.x = pos.x+lx
 				pos.z = pos.z-i+lz-1
 				pos.y = pos.y+height+1
-				--minetest.env:add_entity(pos, "flyingmachine:box")
+				--minetest.env:add_entity(pos, "flyingvehicle:box")
 				break
 			end
 		end
@@ -260,7 +260,7 @@ minetest.register_chatcommand("addVehicle", {
 
         local pos = player:getpos()
 
-        -- /addVehicle vechicle01 1
+        -- /addVehicle vehicle01 1
         if structureName == "vehicle01" then
             minetest.chat_send_player(user, "Add vehicle  " .. structureParam)
 
@@ -279,7 +279,7 @@ minetest.register_chatcommand("addVehicle", {
 	            end
 	        end
 	        
-		-- minetest.add_entity({x=pos.x + 2, y=pos.y + 2, z=pos.z + 7}, "flyingmachine:controller")
+		-- minetest.add_entity({x=pos.x + 2, y=pos.y + 2, z=pos.z + 7}, "flyingvehicle:controller")
 		minetest.set_node({x=pos.x + 2, y=pos.y + 2, z=pos.z + 7}, {name="default:wood"})
         else
             return false, "No vehicle added"
