@@ -284,8 +284,8 @@ minetest.register_chatcommand("addVehicle", {
                 end
             end
 
-        -- minetest.add_entity({x=pos.x + 2, y=pos.y + 2, z=pos.z + 7}, "flyingvehicle:controller")
         minetest.set_node({x=pos.x + 7, y=pos.y + 2, z=pos.z + 2}, {name="default:wood"})
+
         else
             return false, "No vehicle added"
         end
