@@ -241,7 +241,7 @@ minetest.register_craftitem("flyingvehicle:controller", {
 })
 
 
-minetest.register_chatcommand("addVehicle", {
+minetest.register_chatcommand("vehicle", {
     params = "<entity name> <entity param>",
     description = "Add an vehicle with parameters",
     func = function(user, args)
@@ -250,9 +250,9 @@ minetest.register_chatcommand("addVehicle", {
             return false, "Parameters required."
         end
 
-        local structureName, structureParam = args:match("^(%S+)%s(%S+)$")
+        local vehicleAction, vehicleParam = args:match("^(%S+)%s(%S+)$")
 
-        if not structureParam then
+        if not vehicleParam then
             return false, "Entity parameters required"
         end
 
@@ -265,31 +265,35 @@ minetest.register_chatcommand("addVehicle", {
 
         local pos = player:getpos()
 
-        -- /addVehicle vehicle01 1
-        if structureName == "vehicle01" then
-            minetest.chat_send_player(user, "Add vehicle  " .. structureParam)
+        -- /vehicle add 1
+        if vehicleAction == "add" then
+            minetest.chat_send_player(user, "Add vehicle  " .. vehicleParam)
 
-
-            -- y = height
-            for i=0,7 do
-                for j=0,4 do
-                    minetest.set_node({x=pos.x + i, y=pos.y, z=pos.z + j}, {name="default:steelblock"})
+            if vehicleParam == "1" then
+                -- y = height
+                for i=0,7 do
+                    for j=0,4 do
+                        minetest.set_node({x=pos.x + i, y=pos.y, z=pos.z + j}, {name="default:steelblock"})
+                    end
                 end
-            end
 
 
-            for i=0,7 do
-                for j=0,4 do
-                    minetest.set_node({x=pos.x + i, y=pos.y + 1, z=pos.z + j}, {name="default:wood"})
+                for i=0,7 do
+                    for j=0,4 do
+                        minetest.set_node({x=pos.x + i, y=pos.y + 1, z=pos.z + j}, {name="default:wood"})
+                    end
                 end
+
+                minetest.set_node({x=pos.x + 7, y=pos.y + 2, z=pos.z + 2}, {name="default:wood"})
+                minetest.set_node({x=pos.x + 6, y=pos.y + 2, z=pos.z + 2}, {name="default:wood"})
+
+                return true, fmt:format(args, pos.x, pos.y, pos.z)
+
             end
-
-        minetest.set_node({x=pos.x + 7, y=pos.y + 2, z=pos.z + 2}, {name="default:wood"})
-
         else
             return false, "No vehicle added"
         end
 
-        return true, fmt:format(args, pos.x, pos.y, pos.z)
+        return false, "No vehicle added"
     end
 })
